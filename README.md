@@ -7,16 +7,10 @@ Build up your own device in few minutes just starting from the following sample.
 libs:
   - origin: https://github.com/diy365-mgos/bthing-gpio
 ```
-**C/C++ sample code**
-```c
-#include "mgos.h"
-#include "mgos_bthing_gpio.h"
-```
 ## C/C++ API Reference
 ### mgos_bthing_gpio_attach
 ```c
 bool mgos_bthing_gpio_attach(mgos_bthing_t thing, int pin, enum mgos_gpio_pull_type pull);
-};
 ```
 Attaches a *bThing* to the specified GPIO. Returns `true` on success, or `false` otherwise.
 
