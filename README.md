@@ -19,4 +19,3 @@ Attaches a *bThing* to the specified GPIO. Returns `true` on success, or `false`
 |thing|A *bThing*.|
 |pin|The GPIO pin.|
 |pull|The GPIO pull type: `MGOS_GPIO_PULL_UP` or `MGOS_GPIO_PULL_DOWN`.|
-
