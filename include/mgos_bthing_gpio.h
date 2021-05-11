@@ -27,7 +27,7 @@ extern "C" {
 #endif
 
 /* Attaches a *bThing* to the specified GPIO. */
-bool mgos_bthing_gpio_attach(mgos_bthing_t thing, int pin, enum mgos_gpio_pull_type pull);
+bool mgos_bthing_gpio_attach(mgos_bthing_t thing, int pin, bool active_high, bool init_gpio);
 
 #ifdef __cplusplus
 }

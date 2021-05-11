@@ -10,12 +10,21 @@ libs:
 ## C/C++ API Reference
 ### mgos_bthing_gpio_attach
 ```c
-bool mgos_bthing_gpio_attach(mgos_bthing_t thing, int pin, enum mgos_gpio_pull_type pull);
+bool mgos_bthing_gpio_attach(mgos_bthing_t thing, bool active_high, bool init_gpio);
 ```
 Attaches a *bThing* to the specified GPIO. Returns `true` on success, or `false` otherwise.
 
 |Property||
 |--|--|
 |thing|A *bThing*.|
-|pin|The GPIO pin.|
-|pull|The GPIO pull type: `MGOS_GPIO_PULL_UP` or `MGOS_GPIO_PULL_DOWN`.|
+|active_high|`true` if GPIO is on when output is high (1).|
+|init_gpio|`true` to initialize GPIO [mode](https://mongoose-os.com/docs/mongoose-os/api/core/mgos_gpio.h.md#mgos_gpio_set_mode) and [pull](https://mongoose-os.com/docs/mongoose-os/api/core/mgos_gpio.h.md#mgos_gpio_set_pull).|
+
+**Remarks**
+
+If `init_gpio` is `true`, the GPIO is initialized according the *bThing* type and the `active_high` value.
+
+|active_high|MGOS_BTHING_TYPE_SENSOR|MGOS_BTHING_TYPE_ACTUATOR|
+|--|--|--|
+|`true`|MGOS_GPIO_MODE_INPUT<br>MGOS_GPIO_PULL_DOWN|MGOS_GPIO_MODE_OUTPUT<br>MGOS_GPIO_PULL_DOWN|
+|`false`|MGOS_GPIO_MODE_INPUT<br>MGOS_GPIO_PULL_UP|MGOS_GPIO_MODE_OUTPUT<br>MGOS_GPIO_PULL_UP|
