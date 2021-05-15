@@ -1,6 +1,6 @@
 # bThings GPIO Library
 ## Overview
-This Mongoose-OS library allows you to easily a [bThing](https://github.com/diy365-mgos/bthing) to GPIO.
+This Mongoose-OS library allows you to easily attach a [bThing](https://github.com/diy365-mgos/bthing) to GPIO.
 ## GET STARTED
 Build up your own device in few minutes just starting from the following sample. Start including following libraries into your `mos.yml` file.
 ```yaml
@@ -28,3 +28,5 @@ If `init_gpio` is `true`, the GPIO is initialized according the *bThing* type an
 |--|--|--|
 |`true`|MGOS_GPIO_MODE_INPUT<br>MGOS_GPIO_PULL_DOWN|MGOS_GPIO_MODE_OUTPUT<br>MGOS_GPIO_PULL_DOWN|
 |`false`|MGOS_GPIO_MODE_INPUT<br>MGOS_GPIO_PULL_UP|MGOS_GPIO_MODE_OUTPUT<br>MGOS_GPIO_PULL_UP|
+## To Do
+- Implement javascript APIs for [Mongoose OS MJS](https://github.com/mongoose-os-libs/mjs).
