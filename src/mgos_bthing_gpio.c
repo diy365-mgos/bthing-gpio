@@ -16,7 +16,6 @@ bool mg_bthing_gpio_get_state_cb(mgos_bthing_t thing, mgos_bvar_t state, void *u
   if (thing && state && cfg) {
     bool gpio_is_on = mgos_gpio_read(cfg->pin);
     mgos_bvar_set_bool(state, (cfg->active_high ? gpio_is_on : !gpio_is_on));
-    LOG(LL_INFO, ("GPIO READ AS %d", gpio_is_on));
     return true;
   }
   return false;
@@ -28,8 +27,7 @@ bool mg_bthing_gpio_set_state_cb(mgos_bthing_t thing, mgos_bvarc_t state, void *
   struct mg_bthing_gpio_cfg *cfg = (struct mg_bthing_gpio_cfg *)userdata;
   if (thing && cfg && (mgos_bvar_get_type(state) == MGOS_BVAR_TYPE_BOOL)) {
     bool gpio_set_on = mgos_bvar_get_bool(state);
-    mgos_gpio_write(cfg->pin, (cfg->active_high == MGOS_GPIO_PULL_UP ? !gpio_set_on : gpio_set_on));
-    LOG(LL_INFO, ("GPIO SET TO %d", gpio_set_on));
+    mgos_gpio_write(cfg->pin, (cfg->active_high ? gpio_set_on : !gpio_set_on));
     return true;
   }
   return false;
@@ -64,17 +62,19 @@ bool mgos_bthing_gpio_attach(mgos_bthing_t thing, int pin, bool active_high, boo
   cfg->active_high = active_high;
  
   if (mgos_bthing_is_typeof(thing, MGOS_BTHING_TYPE_SENSOR)) {
-    LOG(LL_INFO, ("Setting the on_get_state"));
-    if(mgos_bthing_on_get_state(thing, mg_bthing_gpio_get_state_cb, cfg)) ++set_count;
-    else LOG(LL_ERROR, ("ERROR setting the on_get_state"));
+    if(mgos_bthing_on_get_state(thing, mg_bthing_gpio_get_state_cb, cfg)) {
+      ++set_count;
+    }
+    else {
+      LOG(LL_ERROR, ("Error setting the get-state handler."));
+    }
   }
 
   #if MGOS_BTHING_HAVE_ACTUATORS
   if (mgos_bthing_is_typeof(thing, MGOS_BTHING_TYPE_ACTUATOR) && (set_count > 0)) {
-    LOG(LL_INFO, ("Setting the on_set_state"));
     if (!mgos_bthing_on_set_state(thing, mg_bthing_gpio_set_state_cb, cfg)) {
       mgos_bthing_on_get_state(thing, NULL, NULL);
-      LOG(LL_ERROR, ("ERROR setting the on_set_state"));
+      LOG(LL_ERROR, ("Error setting the set-state handler."));
     }
   }
   #endif // MGOS_BTHING_HAVE_ACTUATORS
@@ -84,6 +84,7 @@ bool mgos_bthing_gpio_attach(mgos_bthing_t thing, int pin, bool active_high, boo
 
   #endif //MGOS_BTHING_HAVE_SENSORS
 
+  LOG(LL_ERROR, ("Unable to attach GPIO pin %d to bThing '%s'.", pin, mgos_bthing_get_id(thing)));
   return false;
 }
 
