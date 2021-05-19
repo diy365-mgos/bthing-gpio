@@ -64,20 +64,24 @@ bool mgos_bthing_gpio_attach(mgos_bthing_t thing, int pin, bool active_high, boo
   cfg->active_high = active_high;
  
   if (mgos_bthing_is_typeof(thing, MGOS_BTHING_TYPE_SENSOR)) {
+    LOG(LL_INFO, ("Setting the on_get_state"));
     if(mgos_bthing_on_get_state(thing, mg_bthing_gpio_get_state_cb, cfg)) ++set_count;
+    else LOG(LL_ERROR, ("ERROR setting the on_get_state"));
   }
 
   #if MGOS_BTHING_HAVE_ACTUATORS
   if (mgos_bthing_is_typeof(thing, MGOS_BTHING_TYPE_ACTUATOR) && (set_count > 0)) {
+    LOG(LL_INFO, ("Setting the on_set_state"));
     if (!mgos_bthing_on_set_state(thing, mg_bthing_gpio_set_state_cb, cfg)) {
       mgos_bthing_on_get_state(thing, NULL, NULL);
+      LOG(LL_ERROR, ("ERROR setting the on_set_state"));
     }
   }
-  
+  #endif // MGOS_BTHING_HAVE_ACTUATORS
+
   if (!set_count) free(cfg);
   return (set_count > 0);
 
-  #endif // MGOS_BTHING_HAVE_ACTUATORS
   #endif //MGOS_BTHING_HAVE_SENSORS
 
   return false;
