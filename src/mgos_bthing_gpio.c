@@ -16,7 +16,7 @@ bool mg_bthing_gpio_get_state_cb(mgos_bthing_t thing, mgos_bvar_t state, void *u
   if (thing && state && cfg) {
     bool gpio_is_on = mgos_gpio_read(cfg->pin);
     mgos_bvar_set_bool(state, (cfg->active_high ? gpio_is_on : !gpio_is_on));
-    LOG(LL_INFO, ("GPIO READ AS %d", gpio_set_on));
+    LOG(LL_INFO, ("GPIO READ AS %d", gpio_is_on));
     return true;
   }
   return false;
