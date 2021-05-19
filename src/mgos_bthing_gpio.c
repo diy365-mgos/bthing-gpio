@@ -40,10 +40,19 @@ bool mgos_bthing_gpio_attach(mgos_bthing_t thing, int pin, bool active_high, boo
   if (init_gpio) {
     enum mgos_gpio_pull_type pull = (active_high ? MGOS_GPIO_PULL_DOWN : MGOS_GPIO_PULL_UP);
     if (mgos_bthing_is_typeof(thing, MGOS_BTHING_TYPE_ACTUATOR)) {
-      if (!mgos_gpio_set_pull(pin, pull)) return false;
-      if (!mgos_gpio_setup_output(pin, (active_high ? false : true))) return false;
+      if (!mgos_gpio_set_pull(pin, pull)) {
+        LOG(LL_ERROR, ("Error setting pull-type=%d of pin %d for bActuator '%s'", pull, pin, mgos_bthing_get_id(thing)));
+        return false;
+      }
+      if (!mgos_gpio_setup_output(pin, (active_high ? false : true))) {
+        LOG(LL_ERROR, ("Error initilizing pin %d as output(%d) for bActuator '%s'", pin, (active_high ? false : true), mgos_bthing_get_id(thing)));
+        return false;
+      }
     } else if (mgos_bthing_is_typeof(thing, MGOS_BTHING_TYPE_SENSOR)) {
-      if (!mgos_gpio_setup_input(pin, pull)) return false;
+      if (!mgos_gpio_setup_input(pin, pull)) {
+        LOG(LL_ERROR, ("Error setting pull-type=%d of pin %d for bSensor '%s'", pull, pin, mgos_bthing_get_id(thing)));
+        return false;
+      }
     }
   }
   

@@ -10,13 +10,14 @@ libs:
 ## C/C++ API Reference
 ### mgos_bthing_gpio_attach
 ```c
-bool mgos_bthing_gpio_attach(mgos_bthing_t thing, bool active_high, bool init_gpio);
+bool mgos_bthing_gpio_attach(mgos_bthing_t thing, int pin, bool active_high, bool init_gpio);
 ```
 Attaches a *bThing* to the specified GPIO. Returns `true` on success, or `false` otherwise.
 
 |Property||
 |--|--|
 |thing|A *bThing*.|
+|pin|The GPIO pin.|
 |active_high|`true` if GPIO is on when output is high (1).|
 |init_gpio|`true` to initialize GPIO [mode](https://mongoose-os.com/docs/mongoose-os/api/core/mgos_gpio.h.md#mgos_gpio_set_mode) and [pull](https://mongoose-os.com/docs/mongoose-os/api/core/mgos_gpio.h.md#mgos_gpio_set_pull).|
 
