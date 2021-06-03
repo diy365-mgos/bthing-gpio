@@ -88,8 +88,8 @@ enum mgos_app_init_result mgos_app_init(void) {
 
   /* create the sensor */
   mgos_bsensor_t s = mgos_bsensor_create("btn1", MGOS_BTHING_PUB_STATE_MODE_CHANGED);
-  /* set sensor read polling every 2 secs. */
-  mgos_bsensor_interrupt_set(s, gpio_pin, MGOS_GPIO_PULL_UP, MGOS_GPIO_INT_EDGE_ANY, 50);
+  /* set sensor interrupt */
+  mgos_bsensor_set_interrupt(s, gpio_pin, MGOS_GPIO_PULL_UP, MGOS_GPIO_INT_EDGE_ANY, 50);
   /* attach GPIO  */
   mgos_bthing_gpio_attach(MGOS_BSENSOR_THINGCAST(s), gpio_pin, false, false);
   
