@@ -4,24 +4,44 @@ Mongoose-OS library that allows you to easily attach a [bThing](https://github.c
 ## C/C++ API Reference
 ### mgos_bthing_gpio_attach
 ```c
-bool mgos_bthing_gpio_attach(mgos_bthing_t thing, int pin, bool active_high, bool init_gpio);
+bool mgos_bthing_gpio_attach(mgos_bthing_t thing, int pin, bool active_high);
 ```
-Attaches a *bThing* to the specified GPIO. Returns `true` on success, or `false` otherwise.
+Attaches a GPIO to a bThing. Returns `true` on success, or `false` otherwise.
 
-|Property||
+|Parameter||
 |--|--|
-|thing|A *bThing*.|
+|thing|A bThing.|
 |pin|The GPIO pin.|
 |active_high|`true` if GPIO is on when output is high (1).|
-|init_gpio|`true` to initialize GPIO [mode](https://mongoose-os.com/docs/mongoose-os/api/core/mgos_gpio.h.md#mgos_gpio_set_mode) and [pull](https://mongoose-os.com/docs/mongoose-os/api/core/mgos_gpio.h.md#mgos_gpio_set_pull).|
+### mgos_bthing_gpio_attach_ex
+```c
+bool mgos_bthing_gpio_attach_ex(mgos_bthing_t thing, int pin, bool active_high,
+                                enum mgos_gpio_pull_type pull);
+```
+Initializes a GPIO and attaches it to a bThing. Returns `true` on success, or `false` otherwise.
+
+|Parameter||
+|--|--|
+|thing|A bThing.|
+|pin|The GPIO pin.|
+|active_high|`true` if GPIO is on when output is high (1).|
+|pull|GPIO [pull type](https://mongoose-os.com/docs/mongoose-os/api/core/mgos_gpio.h.md#mgos_gpio_set_pull) or `MGOS_BTHING_GPIO_PULL_AUTO`.|
 
 **Remarks**
 
-If `init_gpio` is `true`, the GPIO is initialized according the *bThing* type and the `active_high` value.
+If the `pull` parameter is `MGOS_BTHING_GPIO_PULL_AUTO`, the GPIO pull type is initialized according the `active_high` value.
 
-|active_high|MGOS_BTHING_TYPE_SENSOR|MGOS_BTHING_TYPE_ACTUATOR|
-|--|--|--|
-|`true`|MGOS_GPIO_MODE_INPUT<br>MGOS_GPIO_PULL_DOWN|MGOS_GPIO_MODE_OUTPUT<br>MGOS_GPIO_PULL_DOWN|
-|`false`|MGOS_GPIO_MODE_INPUT<br>MGOS_GPIO_PULL_UP|MGOS_GPIO_MODE_OUTPUT<br>MGOS_GPIO_PULL_UP|
+|active_high|Pull type|
+|--|--|
+|`true`|MGOS_GPIO_PULL_DOWN|
+|`false`|MGOS_GPIO_PULL_UP|
+
+The [GPIO mode](https://mongoose-os.com/docs/mongoose-os/api/core/mgos_gpio.h.md#mgos_gpio_set_mode) is initialized according the bThing type.
+
+|bThing type|GPIO mode|
+|--|--|
+|MGOS_BTHING_TYPE_SENSOR|MGOS_GPIO_MODE_INPUT|
+|MGOS_BTHING_TYPE_ACTUATOR|MGOS_GPIO_MODE_OUTPUT|
+
 ## To Do
 - Implement javascript APIs for [Mongoose OS MJS](https://github.com/mongoose-os-libs/mjs).
