@@ -34,11 +34,11 @@ bool mg_bthing_gpio_set_state_cb(mgos_bthing_t thing, mgos_bvarc_t state, void *
 }
 #endif // MGOS_BTHING_HAVE_ACTUATORS
 
-bool mgos_bthing_gpio_attach(mgos_bthing_t thing, int pin, bool active_high, bool init_gpio) {
+bool mg_bthing_gpio_attach(mgos_bthing_t thing, int pin, bool active_high, enum mgos_gpio_pull_type pull, bool init_gpio) {
   #if MGOS_BTHING_HAVE_SENSORS
 
   if (init_gpio) {
-    enum mgos_gpio_pull_type pull = (active_high ? MGOS_GPIO_PULL_DOWN : MGOS_GPIO_PULL_UP);
+    if (pull == -1) pull = (active_high ? MGOS_GPIO_PULL_DOWN : MGOS_GPIO_PULL_UP);
     if (mgos_bthing_is_typeof(thing, MGOS_BTHING_TYPE_ACTUATOR)) {
       if (!mgos_gpio_set_pull(pin, pull)) {
         LOG(LL_ERROR, ("Error setting pull-type=%d of pin %d for bActuator '%s'", pull, pin, mgos_bthing_get_id(thing)));
@@ -88,6 +88,13 @@ bool mgos_bthing_gpio_attach(mgos_bthing_t thing, int pin, bool active_high, boo
   return false;
 }
 
+bool mgos_bthing_gpio_attach_ex(mgos_bthing_t thing, int pin, bool active_high, enum mgos_gpio_pull_type pull) {
+  return mg_bthing_gpio_attach(thing, pin, active_high, pull, true);
+}
+
+bool mgos_bthing_gpio_attach(mgos_bthing_t thing, int pin, bool active_high) {
+  return mg_bthing_gpio_attach(thing, pin, active_high, MGOS_BTHING_GPIO_PULL_AUTO, false);
+}
 
 bool mgos_bthing_gpio_init() {
   return true;
