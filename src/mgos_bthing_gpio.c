@@ -1,5 +1,6 @@
 #include "mgos.h"
 #include "mgos_bthing.h"
+#include "mgos_bthing_gpio.h"
 
 #ifdef MGOS_HAVE_MJS
 #include "mjs.h"
