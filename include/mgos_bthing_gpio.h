@@ -28,12 +28,14 @@ extern "C" {
 
 #define MGOS_BTHING_GPIO_PULL_AUTO -1
 
-/* Attaches a GPIO to a bThing. Returns `true` on success, or `false` otherwise. */
-bool mgos_bthing_gpio_attach(mgos_bthing_t thing, int pin, bool active_high);
+/* Attaches an interrupt GPIO to a bThing. Returns `true` on success, or `false` otherwise. */
+bool mgos_bthing_gpio_int_attach(mgos_bthing_t thing, int pin,
+                                 bool active_high, enum mgos_gpio_pull_type pull
+                                 int int_debounce);
 
-/* Initializes a GPIO and attaches it to a bThing. Returns `true` on success, or `false` otherwise. */
-bool mgos_bthing_gpio_attach_ex(mgos_bthing_t thing, int pin, bool active_high,
-                                enum mgos_gpio_pull_type pull);
+/* Attaches a GPIO to a bThing. Returns `true` on success, or `false` otherwise. */
+bool mgos_bthing_gpio_attach(mgos_bthing_t thing, int pin,
+                             bool active_high, enum mgos_gpio_pull_type pull);
 
 #ifdef __cplusplus
 }

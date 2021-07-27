@@ -2,6 +2,10 @@
 #include "mgos_bthing.h"
 #include "mgos_bthing_gpio.h"
 
+#if MGOS_BTHING_HAVE_SENSORS
+#include "mgos_bsensor.h"
+#endif
+
 #ifdef MGOS_HAVE_MJS
 #include "mjs.h"
 #endif
@@ -89,13 +93,25 @@ bool mg_bthing_gpio_attach(mgos_bthing_t thing, int pin, bool active_high, enum 
   return false;
 }
 
-bool mgos_bthing_gpio_attach_ex(mgos_bthing_t thing, int pin, bool active_high, enum mgos_gpio_pull_type pull) {
+bool mgos_bthing_gpio_attach(mgos_bthing_t thing,
+                             int pin,
+                             bool active_high,
+                             enum mgos_gpio_pull_type pull) {
   return mg_bthing_gpio_attach(thing, pin, active_high, pull, true);
 }
 
-bool mgos_bthing_gpio_attach(mgos_bthing_t thing, int pin, bool active_high) {
-  return mg_bthing_gpio_attach(thing, pin, active_high, MGOS_BTHING_GPIO_PULL_AUTO, false);
+bool mgos_bthing_gpio_int_attach(mgos_bthing_t thing, int pin,
+                                 bool active_high, enum mgos_gpio_pull_type pull
+                                 int int_debounce) {
+  
+  if (mg_bthing_gpio_attach(thing, pin, active_high, pull, false)) {
+    #if MGOS_BTHING_HAVE_SENSORS
+    return mgos_bsensor_update_on_int(thing, pin, pull, MGOS_GPIO_INT_EDGE_ANY, int_debounce);
+    #endif
+  }
+  return false;  
 }
+
 
 bool mgos_bthing_gpio_init() {
   return true;

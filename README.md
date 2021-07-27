@@ -4,7 +4,7 @@ Mongoose-OS library that allows you to easily attach a [bThing](https://github.c
 ## C/C++ API Reference
 ### mgos_bthing_gpio_attach
 ```c
-bool mgos_bthing_gpio_attach(mgos_bthing_t thing, int pin, bool active_high);
+bool mgos_bthing_gpio_attach_legacy(mgos_bthing_t thing, int pin, bool active_high);
 ```
 Attaches a GPIO to a bThing. Returns `true` on success, or `false` otherwise.
 
