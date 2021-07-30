@@ -15,6 +15,7 @@ Initializes a GPIO and attaches it to a bThing. Returns `true` on success, or `f
 |pin|The GPIO pin.|
 |active_high|`true` if GPIO is on when output is high (1).|
 |pull|[GPIO pull type](https://mongoose-os.com/docs/mongoose-os/api/core/mgos_gpio.h.md#mgos_gpio_set_pull) or `MGOS_BTHING_GPIO_PULL_AUTO`.|
+
 **Remarks**
 
 If the `pull` parameter is `MGOS_BTHING_GPIO_PULL_AUTO`, the [GPIO pull type](https://mongoose-os.com/docs/mongoose-os/api/core/mgos_gpio.h.md#mgos_gpio_set_pull) is initialized according the `active_high` value:
