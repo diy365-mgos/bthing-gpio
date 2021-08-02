@@ -79,7 +79,11 @@ bool mgos_bthing_gpio_attach(mgos_bthing_t thing, int pin,
   }
   #endif // MGOS_BTHING_HAVE_ACTUATORS
 
-  if (!set_count) free(cfg);
+  if (!set_count) {
+    free(cfg);
+  } else {
+    LOG(LL_INFO, ("The bThing '%s' was successfully attached to GPIO %d.", mgos_bthing_get_id(thing), pin));
+  }
   return (set_count > 0);
 
   #endif //MGOS_BTHING_HAVE_SENSORS
