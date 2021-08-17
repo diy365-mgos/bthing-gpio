@@ -42,16 +42,16 @@ bool mgos_bthing_gpio_attach(mgos_bthing_t thing, int pin,
   if (pull == -1) pull = (active_high ? MGOS_GPIO_PULL_DOWN : MGOS_GPIO_PULL_UP);
   if (mgos_bthing_is_typeof(thing, MGOS_BTHING_TYPE_ACTUATOR)) {
     if (!mgos_gpio_set_pull(pin, pull)) {
-      LOG(LL_ERROR, ("Error setting pull-type=%d of pin %d for bActuator '%s'", pull, pin, mgos_bthing_get_id(thing)));
+      LOG(LL_ERROR, ("Error setting pull-type=%d of pin %d for bActuator '%s'", pull, pin, mgos_bthing_get_uid(thing)));
       return false;
     }
     if (!mgos_gpio_setup_output(pin, (active_high ? false : true))) {
-      LOG(LL_ERROR, ("Error initilizing pin %d as output(%d) for bActuator '%s'", pin, (active_high ? false : true), mgos_bthing_get_id(thing)));
+      LOG(LL_ERROR, ("Error initilizing pin %d as output(%d) for bActuator '%s'", pin, (active_high ? false : true), mgos_bthing_get_uid(thing)));
       return false;
     }
   } else if (mgos_bthing_is_typeof(thing, MGOS_BTHING_TYPE_SENSOR)) {
     if (!mgos_gpio_setup_input(pin, pull)) {
-      LOG(LL_ERROR, ("Error setting pull-type=%d of pin %d for bSensor '%s'", pull, pin, mgos_bthing_get_id(thing)));
+      LOG(LL_ERROR, ("Error setting pull-type=%d of pin %d for bSensor '%s'", pull, pin, mgos_bthing_get_uid(thing)));
       return false;
     }
   }
@@ -82,13 +82,13 @@ bool mgos_bthing_gpio_attach(mgos_bthing_t thing, int pin,
   if (!set_count) {
     free(cfg);
   } else {
-    LOG(LL_INFO, ("The bThing '%s' was successfully attached to GPIO %d.", mgos_bthing_get_id(thing), pin));
+    LOG(LL_INFO, ("The bThing '%s' was successfully attached to GPIO %d.", mgos_bthing_get_uid(thing), pin));
   }
   return (set_count > 0);
 
   #endif //MGOS_BTHING_HAVE_SENSORS
 
-  LOG(LL_ERROR, ("Unable to attach GPIO pin %d to bThing '%s'.", pin, mgos_bthing_get_id(thing)));
+  LOG(LL_ERROR, ("Unable to attach GPIO pin %d to bThing '%s'.", pin, mgos_bthing_get_uid(thing)));
   return false;
 }
 
